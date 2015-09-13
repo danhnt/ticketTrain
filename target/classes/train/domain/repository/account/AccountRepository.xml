@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="train.domain.repository.account.AccountRepository">
+
+	<resultMap id="accountResultMap" type="Account">
+		<id property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="permission" column="permission" />
+		<result property="accountId" column="accountid" />
+	</resultMap>
+
+	<select id="checklogin" parameterType="Account" resultMap="accountResultMap">
+	    <![CDATA[
+	        SELECT 
+	        	* 
+	        FROM 
+	        	account 
+	        WHERE 
+	        	username=#{username}  
+	        AND 
+	        	password= #{password}
+        ]]>
+	</select>
+	<select id="listAccount" parameterType="String" resultMap="accountResultMap">
+		SELECT
+		*
+		FROM
+		account
+	</select>
+
+	<select id="findOne" parameterType="int" resultMap="accountResultMap">
+	
+	<![CDATA[
+		SELECT 
+			* 
+		FROM 
+			account
+		where
+			accountid=#{accountId}
+		
+	]]>
+	</select>
+	<insert id="register" parameterType="Account">
+		  <![CDATA[
+        INSERT INTO account
+        (
+            
+            username,
+            password,
+            permission
+        )
+        VALUES
+        (            
+            #{username},
+            #{password},
+            #{permission}
+        )
+    ]]>
+	</insert>
+	<update id="modify" parameterType="Account">
+
+		UPDATE
+		account
+		SET
+		<if test="username != null and username != ''">
+	  	 	<![CDATA[
+	   		username=#{username}, 
+	   		]]>
+		</if>
+		<if test="password != null and password != ''">
+	  	 	<![CDATA[
+	   		password=#{password}, 
+	   		]]>
+		</if>
+		<if test="permission != null and permission != ''">
+	  	 	<![CDATA[
+	   		permission=#{permission}
+	   		]]></if>
+		WHERE
+	  	 	<![CDATA[
+		accountid=#{accountId}
+		]]>
+
+	</update>
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM
+		account
+		WHERE
+		accountid=#{accountId}
+	</delete>
+</mapper>

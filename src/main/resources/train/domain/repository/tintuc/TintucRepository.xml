@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="train.domain.repository.tintuc.TintucRepository">
+
+	<resultMap id="tintucResultMap" type="train.domain.model.Tintuc">
+		<id property="maTin" column="matin" />
+		<result property="maNv.ten" column="tenNv" />
+		<result property="ngayDang" column="ngaydang" />
+		<result property="tieuDe" column="tieude" />
+		<result property="noiDung" column="noidung" />
+		<result property="anh" column="anh" />
+	</resultMap>
+
+	<select id="listTintuc" resultMap="tintucResultMap">
+		SELECT
+			t.matin as matin,
+			e.employee_name as tenNv,
+			t.ngaydang as ngaydang,
+			t.tieude as tieude,
+			t.noidung as noidung,
+			t.anh as anh
+		FROM
+			tintuc as t
+		JOIN
+			employee as e
+		ON
+			t.manv=e.employee_id
+	</select>
+
+	<select id="findOne" parameterType="int" resultMap="tintucResultMap">
+	
+	<![CDATA[
+		SELECT 
+				t.matin as matin, 
+				e.employee_name as tenNv, 
+				t.ngaydang as ngaydang,	
+				t.tieude as tieude, 
+				t.noidung as noidung, 
+				t.anh as anh 
+			FROM 
+				tintuc as t 
+			JOIN 
+				employee as e 
+			ON 
+				t.manv=e.employee_id
+		where
+			matin=#{tintucId}
+		
+	]]>
+	</select>
+	<insert id="register" parameterType="Tintuc">
+		  <![CDATA[
+        INSERT INTO tintuc
+        (
+            manv,
+            ngaydang,
+            tieude,
+            noidung,
+            anh
+        )
+        VALUES
+        (            
+            #{maNv.id},
+            #{ngayDang},
+            #{tieuDe},
+            #{noiDung},
+            #{anh}
+        )
+    ]]>
+	</insert>
+	<update id="modify" parameterType="Tintuc">
+
+		UPDATE
+		tintuc
+		SET
+		mavn=#{maNv.id},
+		ngaydang=#{ngayDang},
+		<if test="tieude != null and tieude != ''">
+	  	 	<![CDATA[
+	   		tieude=#{tieuDe}, 
+	   		]]>
+		</if>
+		<if test="noidung != null and noidung != ''">
+	  	 	<![CDATA[
+	   		noidung=#{noiDung},
+	   		]]></if>
+		<if test="anh != null and anh != ''">
+	  	 	<![CDATA[
+	   		anh=#{anh}
+	   		]]></if>
+		WHERE
+	  	 	<![CDATA[
+		maTin=#{matin}
+		]]>
+
+	</update>
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM
+		tintuc
+		WHERE
+		matin=#{tintucId}
+	</delete>
+</mapper>

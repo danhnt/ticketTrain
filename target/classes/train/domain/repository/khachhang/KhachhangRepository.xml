@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="train.domain.repository.khachhang.KhachhangRepository">
+
+	<resultMap id="khachhangResultMap" type="KhachHang">
+		<id property="khachHangId" column="khachhang_id" />
+		<result property="ten" column="khachhang_ten" />
+		<result property="email" column="email" />
+		<result property="phone" column="phone" />
+		<result property="cmt" column="cmt" />
+	</resultMap>
+
+	<select id="listkhachHang" resultMap="khachhangResultMap">
+		SELECT
+		*
+		FROM
+		khachhang
+	</select>
+
+	<select id="findOne" parameterType="int" resultMap="khachhangResultMap">
+	
+	<![CDATA[
+		SELECT 
+			* 
+		FROM 
+			khachhang
+		where
+			khachhang_id=#{khachhangId}
+		
+	]]>
+	</select>
+	<insert id="register" parameterType="KhachHang">
+		  <![CDATA[
+        INSERT INTO khachhang
+        (
+            khachhang_ten,
+            email,
+            phone,
+            cmt
+        )
+        VALUES
+        (            
+            #{ten},
+            #{email},
+            #{phone},
+            #{cmt}
+        )
+    ]]>
+	</insert>
+	<update id="modify" parameterType="KhachHang">
+
+		UPDATE
+		khachhang
+		SET
+		<if test="ten != null and ten != ''">
+	  	 	<![CDATA[
+	   		khachhang_ten=#{ten}, 
+	   		]]>
+		</if>
+		<if test="email != null and email != ''">
+	  	 	<![CDATA[
+	   		email=#{email}, 
+	   		]]>
+		</if>
+		<if test="phone != null and phone != ''">
+	  	 	<![CDATA[
+	   		phone=#{phone},
+	   		]]></if>
+		<if test="cmt != null and cmt != ''">
+	  	 	<![CDATA[
+	   		cmt=#{cmt}
+	   		]]></if>
+		WHERE
+	  	 	<![CDATA[
+		khachhang_id=#{khachHangId}
+		]]>
+
+	</update>
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM
+		khachhang
+		WHERE
+		khachhang_id=#{khachhangId}
+	</delete>
+</mapper>

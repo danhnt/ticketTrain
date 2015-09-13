@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="train.domain.repository.employee.EmployeeRepository">
+
+	<resultMap id="employeeResultMap" type="NhanVien">
+		<id property="id" column="employee_id" />
+		<result property="ten" column="employee_name" />
+		<result property="gioiTinh" column="gender" />
+		<result property="diaChi" column="address" />
+		<result property="phone" column="phone" />
+	</resultMap>
+
+	<select id="listEmployee" resultMap="employeeResultMap">
+		SELECT
+		*
+		FROM
+		employee
+	</select>
+
+	<select id="findOne" parameterType="int" resultMap="employeeResultMap">
+	
+	<![CDATA[
+		SELECT 
+			* 
+		FROM 
+			employee
+		where
+			employee_id=#{nhanvienId}
+		
+	]]>
+	</select>
+	<insert id="register" parameterType="NhanVien">
+		  <![CDATA[
+        INSERT INTO employee
+        (
+            employee_name,
+            gender,
+            address,
+            phone
+        )
+        VALUES
+        (            
+            #{ten},
+            #{gioiTinh},
+            #{diaChi},
+            #{phone}
+        )
+    ]]>
+	</insert>
+	<update id="modify" parameterType="NhanVien">
+
+		UPDATE
+		employee
+		SET
+		<if test="ten != null and ten != ''">
+	  	 	<![CDATA[
+	   		employee_name=#{ten}, 
+	   		]]>
+		</if>
+		<if test="gioiTinh != null and gioiTinh != ''">
+	  	 	<![CDATA[
+	   		gender=#{gioiTinh}, 
+	   		]]>
+		</if>
+		<if test="diaChi != null and diaChi != ''">
+	  	 	<![CDATA[
+	   		address=#{diaChi},
+	   		]]></if>
+		<if test="phone != null and phone != ''">
+	  	 	<![CDATA[
+	   		phone=#{phone}
+	   		]]></if>
+		WHERE
+	  	 	<![CDATA[
+		employee_id=#{id}
+		]]>
+
+	</update>
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM
+		employee
+		WHERE
+		employee_id=#{id}
+	</delete>
+</mapper>
