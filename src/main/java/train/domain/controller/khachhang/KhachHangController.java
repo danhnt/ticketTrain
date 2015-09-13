@@ -44,6 +44,7 @@ public class KhachHangController {
 		return VIEW_FORM_PATH;
 	}
 
+	
 	@RequestMapping(value = "modify", method = RequestMethod.GET)
 	public String displayModify(@RequestParam("id") Integer id, Model model,
 			RedirectAttributes redirectAttr) {
